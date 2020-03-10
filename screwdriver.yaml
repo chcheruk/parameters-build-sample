@@ -24,23 +24,13 @@ jobs:
         steps:
             - step1: 'echo "Region: $(meta get parameters.region.value)"'
             - step2: 'echo "AZ: $(meta get parameters.az.value)"'
-    StepA:
+    Pre-Setup:
         requires: [next]
         steps:
             - step1: 'echo "Region: $(meta get parameters.region.value)"'
             - step2: 'echo "AZ: $(meta get parameters.az.value)"'
-    StepB:
-        requires: [StepA]
-        steps:
-            - step1: 'echo "Region: $(meta get parameters.region.value)"'
-            - step2: 'echo "AZ: $(meta get parameters.az.value)"'
-    StepC:
-        requires: [StepB]
-        steps:
-            - step1: 'echo "Region: $(meta get parameters.region.value)"'
-            - step2: 'echo "AZ: $(meta get parameters.az.value)"'
     Bootstapping:
-        requires: [StepC]
+        requires: [Pre-Setup]
         steps:
             - step1: 'echo "Region: $(meta get parameters.region.value)"'
             - step2: 'echo "AZ: $(meta get parameters.az.value)"'
