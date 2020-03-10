@@ -47,7 +47,7 @@ jobs:
             - step2: 'echo "GCP: $(meta get parameters.gcp.value)"'
             - step3: 'echo "GCP: $(meta get parameters.gcp.description)"'
     ALL:
-        requires: [GCP,AWS,Bootstapping,Pre-Setup,next]
+        requires: [GCP,AWS,Bootstapping,next]
         steps:
             - step1: 'echo "This is GCP Orchestration"'
             - step2: 'echo "GCP: $(meta get parameters.gcp.value)"'
