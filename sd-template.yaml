@@ -1,6 +1,19 @@
+namespace: golang
+name: init
+version: "1"
+description: An example template for testing golang files
+maintainer: foo@bar.com
 config:
-    image: node:6
-    steps:
-        - preinstall: echo Installing
-        - install: npm help
-        - test: npm help
+  image: node:8
+  steps:
+    - glide: |
+        export PATH=$PATH:$GOPATH/bin
+        go get -v github.com/Masterminds/glide
+    - install: glide install
+    - vet: go vet ./...
+    - gofmt: "find . -name '*.go' | xargs gofmt -s -w"
+    - test: go test ./...
+    # Ensure we can compile
+    - build: go build -a -o /dev/null
+    # Test cross-compiling as well
+    - test-release: "curl -sL https://git.io/goreleaser | bash -s -- --snapshot"
