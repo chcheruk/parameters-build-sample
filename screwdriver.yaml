@@ -6,6 +6,7 @@ parameters:
     az:
         value: "1"
         description: "default availability zone"
+        hello: "World"
     aws: 
         value: "Cloud Formation Template"
         description: "Default Cloud Formation Template"
@@ -19,6 +20,7 @@ jobs:
         steps:
             - step1: 'echo "Region: $(meta get parameters.region.value)"'
             - step2: 'echo "AZ: $(meta get parameters.az.value)"'
+            - step3: 'echo "AZ: $(meta get parameters.az.hello)"'
     next:
         requires: [main]
         steps:
