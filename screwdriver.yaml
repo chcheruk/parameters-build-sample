@@ -1,5 +1,5 @@
 shared:
-    image: ubuntu:latest
+    image: aci:v14
 
 parameters:
     region: "us-west-1"
