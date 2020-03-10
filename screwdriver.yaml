@@ -6,6 +6,12 @@ parameters:
     az:
         value: "1"
         description: "default availability zone"
+    aws: 
+        value: "Cloud Formation Template"
+        description: "Default Cloud Formation Template"
+    gcp: 
+        value: "Google Cloud Deployment Template"
+        description: "Default Google Cloud Deployment Template"
 
 jobs:
     main:
@@ -33,8 +39,20 @@ jobs:
         steps:
             - step1: 'echo "Region: $(meta get parameters.region.value)"'
             - step2: 'echo "AZ: $(meta get parameters.az.value)"'
-    StepD:
+    Bootstapping:
         requires: [StepC]
         steps:
             - step1: 'echo "Region: $(meta get parameters.region.value)"'
             - step2: 'echo "AZ: $(meta get parameters.az.value)"'
+    AWS:
+        requires: [Bootstapping]
+        steps:
+            - step1: 'echo "This is AWS Orchestration"'
+            - step2: 'echo "AWS: $(meta get parameters.aws.value)"'
+            - step3: 'echo "AWS: $(meta get parameters.aws.description)"'
+    GCP:
+        requires: [Bootstapping]
+        steps:
+            - step1: 'echo "This is GCP Orchestration"'
+            - step2: 'echo "GCP: $(meta get parameters.gcp.value)"'
+            - step3: 'echo "GCP: $(meta get parameters.gcp.description)"'
