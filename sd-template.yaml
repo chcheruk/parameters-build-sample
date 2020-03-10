@@ -1,0 +1,6 @@
+config:
+    image: node:6
+    steps:
+        - preinstall: echo Installing
+        - install: npm help
+        - test: npm help
