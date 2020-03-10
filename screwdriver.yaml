@@ -1,5 +1,5 @@
 shared:
-    image: node:8
+    image: ubuntu:latest
 
 parameters:
     region: "us-west-1"
