@@ -1,0 +1,17 @@
+namespace: nodejs
+name: test
+version: "1"
+description: An example template for testing npm files
+maintainer: foo@bar.com
+images:
+  stable-image: node:6
+  latest-image: node:8
+config:
+  image: node:6
+  steps:
+    - install: npm install
+    - test: npm test
+  environment:
+    FOO: bar
+  secrets:
+    - NPM_TOKEN
