@@ -53,43 +53,44 @@ jobs:
             - step2: 'echo "GCP: $(meta get parameters.gcp.value)"'
             - step3: 'echo "GCP: $(meta get parameters.gcp.description)"'
             
-   # 1. Validate templates
-   validate_templates:
-    steps:
-    - install_prerequisites: npm install -g screwdriver-template-main
-    # a. Validate the default (golang/init) template
-    - validate_default_template: template-validate
-    # b. Validate the non-default (nodejs/test) template
-    - validate_nodejs_template: |
-        export SD_TEMPLATE_PATH=./nodejs.yaml
-        template-validate
-  # 2a. Publish and tag the golang template in one job
-  # Note: We do not need to set SD_TEMPLATE_PATH since that template is in the default path (sd-template.yaml)
-  publish_default_template:
-    requires: [validate_templates]
-    steps:
-    - install_prerequisites: npm install -g screwdriver-template-main
-    - publish:  template-publish
-    - autotag: template-tag --name golang/init --tag latest
+    # 1. Validate templates
+    validate_templates:
+        requires: [ALL]
+        steps:
+            - install_prerequisites: npm install -g screwdriver-template-main
+            # a. Validate the default (golang/init) template
+            - validate_default_template: template-validate
+            # b. Validate the non-default (nodejs/test) template
+            - validate_nodejs_template: |
+            export SD_TEMPLATE_PATH=./nodejs.yaml
+            template-validate
+      # 2a. Publish and tag the golang template in one job
+      # Note: We do not need to set SD_TEMPLATE_PATH since that template is in the default path (sd-template.yaml)
+     publish_default_template:
+        requires: [validate_templates]
+        steps:
+        - install_prerequisites: npm install -g screwdriver-template-main
+        - publish:  template-publish
+        - autotag: template-tag --name golang/init --tag latest
 
-  # 2b. Publish the nodejs template and tag with "latest"
-  # Note: Need to set SD_TEMPLATE_PATH since it is not at the default (sd-template.yaml)
-  # The remote test starts after this job completes (https://github.com/screwdriver-cd-test/template-test-example)
-  publish_nodejs_template:
-    requires: [validate_templates]
-    environment:
-      SD_TEMPLATE_PATH: ./nodejs.yaml
-    steps:
-    - install_prerequisites: npm install -g screwdriver-template-main
-    - publish:  template-publish
-    - autotag: template-tag --name nodejs/test --tag latest
+      # 2b. Publish the nodejs template and tag with "latest"
+      # Note: Need to set SD_TEMPLATE_PATH since it is not at the default (sd-template.yaml)
+      # The remote test starts after this job completes (https://github.com/screwdriver-cd-test/template-test-example)
+      publish_nodejs_template:
+        requires: [validate_templates]
+        environment:
+          SD_TEMPLATE_PATH: ./nodejs.yaml
+        steps:
+        - install_prerequisites: npm install -g screwdriver-template-main
+        - publish:  template-publish
+        - autotag: template-tag --name nodejs/test --tag latest
 
-  # 3. Promote the nodejs template with the "stable" tag
-  # Only promotes if the remote test is successful
-  promote_nodejs_template:
-    requires: [~sd@1733:test_nodejs_template]
-    environment:
-      SD_TEMPLATE_PATH: ./nodejs.yaml
-    steps:
-    - install_prerequisites: npm install -g screwdriver-template-main
-    - autotag: template-tag --name nodejs/test --tag stable
+      # 3. Promote the nodejs template with the "stable" tag
+      # Only promotes if the remote test is successful
+      promote_nodejs_template:
+        requires: [~sd@1733:test_nodejs_template]
+        environment:
+          SD_TEMPLATE_PATH: ./nodejs.yaml
+        steps:
+        - install_prerequisites: npm install -g screwdriver-template-main
+        - autotag: template-tag --name nodejs/test --tag stable
