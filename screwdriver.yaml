@@ -90,7 +90,7 @@ jobs:
         steps:
         - install_prerequisites: npm install -g screwdriver-template-main
         - publish:  template-publish
-        - autotag: template-tag --name omnirpa/staging --tag latest
+        - autotag: template-tag --name nodejs/staging --tag latest
 
       # 3. Promote the nodejs template with the "stable" tag
       # Only promotes if the remote test is successful
@@ -100,4 +100,4 @@ jobs:
           SD_TEMPLATE_PATH: ./nodejs.yaml
         steps:
         - install_prerequisites: npm install -g screwdriver-template-main
-        - autotag: template-tag --name omnirpa/production --tag stable
+        - autotag: template-tag --name nodejs/production --tag stable
