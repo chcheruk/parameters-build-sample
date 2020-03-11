@@ -22,7 +22,7 @@ jobs:
             - install: npm install screwdriver-template-main
             - validate: ./node_modules/.bin/template-validate
     publish:
-        requires: main
+        requires: [main]
         steps:
             - install: npm install screwdriver-template-main
             - publish: ./node_modules/.bin/template-publish --tag stable
