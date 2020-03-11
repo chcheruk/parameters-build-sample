@@ -19,6 +19,13 @@ jobs:
         steps:
             - step1: 'echo "Region: $(meta get parameters.region.value)"'
             - step2: 'echo "AZ: $(meta get parameters.az.value)"'
+            - install: npm install screwdriver-template-main
+            - validate: ./node_modules/.bin/template-validate
+   publish:
+        requires: main
+        steps:
+            - install: npm install screwdriver-template-main
+            - publish: ./node_modules/.bin/template-publish --tag stable
     next:
         requires: [main]
         steps:
